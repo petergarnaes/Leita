@@ -1,0 +1,6 @@
+.idea
+/target
+# Results of crawl, ie. all H. C. Andersens fairytales
+/hc_crawler/eventyr
+**/*.rs.bk
+Cargo.lock
