@@ -10,7 +10,7 @@ impl FreqIndex {
     pub fn from_doc_id(doc_id: &String) -> FreqIndex {
         FreqIndex {
             doc_id: doc_id.clone(),
-            doc_freq: 0
+            doc_freq: 1
         }
     }
     pub fn freq_inc(&mut self){

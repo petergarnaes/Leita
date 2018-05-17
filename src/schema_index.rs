@@ -31,15 +31,28 @@ impl<T: DocIndex> Index for SchemaDependentIndex<T> {
     fn index_doc(&mut self,doc_id: &String,(term,position): (&String,usize)) {
         self.total_documents = self.total_documents + 1;
         let doc_indexes = self.doc_table.entry(term.clone()).or_insert({
-            let mut index = Vec::new();
-            index.push(T::create_bucket(doc_id));
-            index
+            Vec::new()
         });
         // TODO optimize indexing, in beginning we do static indexing so a little time lost here is fine
-        for mut doc_index in doc_indexes {
-            if doc_index.get_doc_id() == doc_id {
-                doc_index.index((term,position))
-            }
+        let mut i = 0;
+        let mut update = false;
+        while i <= doc_indexes.len() {
+            update = update || match doc_indexes.get_mut(i) {
+                Some(doc_index) => {
+                    if doc_index.get_doc_id().eq(doc_id) {
+                        doc_index.index((term,position));
+                        true
+                    } else {
+                        false
+                    }
+                },
+                None => false
+            };
+            if update {break};
+            i = i + 1;
+        }
+        if !update {
+            doc_indexes.push(T::create_bucket(doc_id))
         }
     }
 }
