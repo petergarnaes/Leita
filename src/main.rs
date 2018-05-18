@@ -19,8 +19,6 @@ fn main() {
         f.read_to_string(&mut contents)
             .expect("something went wrong reading the file");
 
-        //println!("With text:\n{}", contents);
-
         for p in removes.iter() {
             contents = contents.replace(p," ");
         }
@@ -31,5 +29,5 @@ fn main() {
         }
 
     }
-    println!("{:?}",schema_index);
+    println!("{:#?}",schema_index);
 }

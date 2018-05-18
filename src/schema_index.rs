@@ -10,6 +10,8 @@ pub trait DocIndex {
 
 pub trait Index {
     fn index_doc(&mut self, doc_id: &String, term_index: (&String,usize));
+    // TODO Returns list of doc ids matching search
+    //fn search(&self, term: &String) -> [&String];
 }
 
 #[derive(Debug)]
@@ -33,7 +35,6 @@ impl<T: DocIndex> Index for SchemaDependentIndex<T> {
         let doc_indexes = self.doc_table.entry(term.clone()).or_insert({
             Vec::new()
         });
-        // TODO optimize indexing, in beginning we do static indexing so a little time lost here is fine
         let mut i = 0;
         let mut update = false;
         while i <= doc_indexes.len() {
