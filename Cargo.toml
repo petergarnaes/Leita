@@ -1,5 +1,5 @@
 [package]
-name = "rust_inverse_index"
+name = "leita"
 version = "0.1.0"
 authors = ["Peter Garnæs <pag@dbc.dk>"]
 
