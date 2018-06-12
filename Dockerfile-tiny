@@ -1,0 +1,17 @@
+FROM rust:1.26.0 as build
+
+WORKDIR /usr/src/leita
+COPY . .
+
+RUN cargo install
+# Building for MUSL target since we are using alpine in runtime, which uses musl libc
+RUN rustup target add x86_64-unknown-linux-musl
+RUN cargo build --release --target=x86_64-unknown-linux-musl
+RUN strip target/x86_64-unknown-linux-musl/release/leita
+
+FROM alpine:3.7
+
+COPY --from=build /usr/src/leita/target/x86_64-unknown-linux-musl/release/leita /usr/bin
+COPY --from=build /usr/src/leita/hc_crawler/eventyr /hc_crawler/eventyr
+# EXPOSE x
+CMD ["leita"]
