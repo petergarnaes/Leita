@@ -1,10 +1,15 @@
+//! # Leita - search engine in Rust
+//!
+//! Pet project for learning Rust and search engine algorithms and implementation optimizations.
+
 use std::fs::{File,read_dir};
 use std::io::prelude::*;
-mod freq_index;
+pub mod freq_index;
 use freq_index::FreqIndex;
-mod schema_index;
+pub mod schema_index;
 use schema_index::{SchemaDependentIndex,Index};
 
+/// Main function testing basic functionality
 fn main() {
     //FreqIndex::from_doc_id(&String::from("bob.txt"));
     let removes = [";",",",".","\n","\"","-",":","!","?","(",")","–"];

@@ -1,3 +1,8 @@
+//! # Frequency Index
+//!
+//! This inverse index type defines a `FreqIndex` which is a bucket type that only registers the
+//! number of times a term occurs in a document
+
 use super::schema_index::DocIndex;
 
 #[derive(Debug)]

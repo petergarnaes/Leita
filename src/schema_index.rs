@@ -1,13 +1,32 @@
+//! # Schema Dependent Index
+//!
+//! This module defines the general interface for basic inverse indexes, through `DocIndex` and
+//! `Index`. It also implements a `SchemaDependentIndex` which is able to index documents.
+//!
+//! ## Schema dependent
+//!
+//! This means that each new document is indexed on its own, and term position is relative to the 
+//! document it appears in. A schemaless index all documents would be considered as one long
+//! document.
 use std::collections::HashMap;
 
+/// Trait representing an indexed document.
 pub trait DocIndex {
+    /// Method used to inizialize struct by the inverse index.
     fn create_bucket(doc_id: &String) -> Self;
-    // Index the document in this bucket
+    /// Indexes a document in this bucket. The inverse index determines that the document belongs
+    /// in this bucket.
+    ///
+    /// # Arguments
+    ///
+    ///  * `index_term` - a tuple containing the term and position that is being indexed in this
+    ///  bucket.
     fn index(&mut self, index_term: (&String,usize));
-
+    /// Should return the document id of the document that this bucket represents
     fn get_doc_id(&self) -> &String;
 }
 
+/// Trait representing an inverse index
 pub trait Index {
     fn index_doc(&mut self, doc_id: &String, term_index: (&String,usize));
     // TODO Returns list of doc ids matching search
@@ -15,6 +34,7 @@ pub trait Index {
 }
 
 #[derive(Debug)]
+/// Schema dependent inverse index.
 pub struct SchemaDependentIndex<T: DocIndex> {
     total_documents: usize,
     doc_table: HashMap<String,Vec<T>>
