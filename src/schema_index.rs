@@ -13,7 +13,7 @@ use std::collections::HashMap;
 /// Trait representing an indexed document.
 pub trait DocIndex {
     /// Method used to inizialize struct by the inverse index.
-    fn create_bucket(doc_id: &String) -> Self;
+    fn create_bucket(doc_id: &str) -> Self;
     /// Indexes a document in this bucket. The inverse index determines that the document belongs
     /// in this bucket.
     ///
@@ -28,7 +28,7 @@ pub trait DocIndex {
 
 /// Trait representing an inverse index
 pub trait Index {
-    fn index_doc(&mut self, doc_id: &String, term_index: (&String,usize));
+    fn index_doc(&mut self, doc_id: &str, term_index: (&String,usize));
     // TODO Returns list of doc ids matching search
     //fn search(&self, term: &String) -> [&String];
 }
@@ -50,8 +50,8 @@ impl<T: DocIndex> SchemaDependentIndex<T> {
 }
 
 impl<T: DocIndex> Index for SchemaDependentIndex<T> {
-    fn index_doc(&mut self,doc_id: &String,(term,position): (&String,usize)) {
-        self.total_documents = self.total_documents + 1;
+    fn index_doc(&mut self,doc_id: &str,(term,position): (&String,usize)) {
+        self.total_documents += 1;
         let doc_indexes = self.doc_table.entry(term.clone()).or_insert({
             Vec::new()
         });
@@ -70,7 +70,7 @@ impl<T: DocIndex> Index for SchemaDependentIndex<T> {
                 None => false
             };
             if update {break};
-            i = i + 1;
+            i += 1;
         }
         if !update {
             doc_indexes.push(T::create_bucket(doc_id))

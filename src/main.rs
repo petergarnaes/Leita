@@ -24,7 +24,7 @@ fn main() {
         f.read_to_string(&mut contents)
             .expect("something went wrong reading the file");
 
-        for p in removes.iter() {
+        for p in &removes {
             contents = contents.replace(p," ");
         }
         let result: Vec<_> = contents.split_whitespace().collect();

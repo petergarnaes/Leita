@@ -12,19 +12,19 @@ pub struct FreqIndex {
 }
 
 impl FreqIndex {
-    pub fn from_doc_id(doc_id: &String) -> FreqIndex {
+    pub fn from_doc_id(doc_id: &str) -> FreqIndex {
         FreqIndex {
-            doc_id: doc_id.clone(),
+            doc_id: doc_id.to_string(),
             doc_freq: 1
         }
     }
     pub fn freq_inc(&mut self){
-        self.doc_freq = self.doc_freq + 1;
+        self.doc_freq += 1;
     }
 }
 
 impl DocIndex for FreqIndex {
-    fn create_bucket(doc_id: &String) -> Self {
+    fn create_bucket(doc_id: &str) -> Self {
         FreqIndex::from_doc_id(doc_id)
     }
     fn index(&mut self, _: (&String,usize)){
